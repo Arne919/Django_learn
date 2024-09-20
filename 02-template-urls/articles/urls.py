@@ -1,4 +1,5 @@
 from django.urls import path
+
 # 명시적 상대경로
 from . import views
 
@@ -9,5 +10,6 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('throw/', views.throw, name='throw'),
     path('catch/', views.catch, name='catch'),
+    path('<int:num>/', views.detail),
     path('hello/<str:name>/', views.greeting, name='greeting'),
 ]

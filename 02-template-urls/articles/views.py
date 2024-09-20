@@ -11,7 +11,12 @@ def index(request):
 
 
 def dinner(request):
-    foods = ['국밥', '국수', '카레', '탕수육',]
+    foods = [
+        '국밥',
+        '국수',
+        '카레',
+        '탕수육',
+    ]
     picked = random.choice(foods)
     context = {
         'foods': foods,
@@ -35,6 +40,13 @@ def catch(request):
         'message': message,
     }
     return render(request, 'articles/catch.html', context)
+
+
+def detail(request, num):
+    context = {
+        'num': num,
+    }
+    return render(request, 'articles/detail.html', context)
 
 
 def greeting(request, name):
