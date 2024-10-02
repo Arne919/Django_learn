@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('articles/', include('articles.urls')),
     path('accounts/', include('accounts.urls')),
-    path('<user_pk>/password/', views.change_password, name='change_password'),
+    path('<int:user_pk>/password/', views.change_password, name='change_password'),
 ]

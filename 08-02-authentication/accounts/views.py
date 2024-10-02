@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
@@ -24,12 +25,17 @@ def login(request):
     return render(request, 'accounts/login.html', context)
 
 
+@login_required
 def logout(request):
+    auth_logout(request)
+    return redirect('articles:index')
+
+
+def signup(request):
     if request.user.is_authenticated:
         return redirect('articles:index')
 
-def signup(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -41,13 +47,18 @@ def signup(request):
     }
     return render(request, 'accounts/signup.html', context)
 
+
+@login_required
 def delete(request):
-    # User모델에서 누가 회원탈퇴를 요청한건지 탐색
+    # 누가 요청한건지 User모델에서 검색할 필요가 없다.
+    # request 객체에 요청을 보내는 user 정보가 함께 들어있기 때문.
     request.user.delete()
     return redirect('articles:index')
 
+
+@login_required
 def update(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
@@ -59,6 +70,8 @@ def update(request):
     }
     return render(request, 'accounts/update.html', context)
 
+
+@login_required
 def change_password(request, user_pk):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

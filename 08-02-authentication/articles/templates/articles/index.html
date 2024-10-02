@@ -6,11 +6,10 @@
   <title>Document</title>
 </head>
 <body>
-  <p>안녕하세요 {{ user.username }}</p>
-
   <h1>Articles</h1>
-  {% if request.user.is_quthenticated %}
-    <p>안녕하세요 {{user.username}}</p>
+
+  {% if request.user.is_authenticated %}
+    <p>안녕하세요 {{ user.username }}</p>
     <a href="{% url "articles:create" %}">CREATE</a>
     <form action="{% url "accounts:logout" %}" method="POST">
       {% csrf_token %}
@@ -22,20 +21,9 @@
     </form>
     <a href="{% url "accounts:update" %}">회원정보 수정</a>
   {% else %}
-  <a href="{% url "accounts:login" %}">LOGIN</a>
-  <a href="{% url "accounts:signup" %}">회원가입</a>
+    <a href="{% url "accounts:login" %}">LOGIN</a>
+    <a href="{% url "accounts:signup" %}">회원가입</a>
   {% endif %}
-  
-
-  <form action="{% url "accounts:logout" %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="LOGOUT">
-  </form>
-
-  
-
-
-
 
   
   {% for article in articles %}
